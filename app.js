@@ -32,7 +32,7 @@ const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests from this IP, please try again in an hour'
 });
-
+// Cors===============================
 app.use(cors());
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
@@ -63,11 +63,6 @@ app.use(
     whitelist: ['fileNumber']
   })
 );
-
-// app.use(function(req, res, next) {
-//   console.log(req.cookies);
-//   next();
-// });
 
 // ROUTES
 app.get('/', (req, res) => {
