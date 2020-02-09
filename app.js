@@ -19,7 +19,7 @@ const floodGeodataRouter = require('./routes/floodGeodataRoutes');
 const app = express();
 // app.set('views', path.join(__dirname, 'dist'));
 app.use(express.static(path.join(__dirname, 'dist')));
-app.use(cors());
+// app.use(cors());
 // 1) Global Middlewaes
 // Set security HTTP header
 app.use(helmet());
@@ -34,13 +34,13 @@ const limiter = rateLimit({
 });
 // Cors===============================
 
-// app.use(function(req, res, next) {
-//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
-//   res.setHeader('Access-Control-Allow-Methods', 'POST');
-//   res.setHeader('Access-Control-Allow-Credentials', 'true');
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//   next();
-// });
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'https://tophill.herokuapp.com');
+  res.setHeader('Access-Control-Allow-Methods', 'POST');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 app.use('/api', limiter);
 
