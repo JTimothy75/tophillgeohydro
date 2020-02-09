@@ -88,7 +88,7 @@ exports.checkFloodPronePossibily = catchAsync(async (req, res, next) => {
     );
   }
 
-  console.log(lat, lng);
+  // console.log(lat, lng);
 
   let floodProne = await FloodGeodatas.find({
     proneArea: {
@@ -144,7 +144,7 @@ exports.checkFloodPronePossibilyPlusHistory = catchAsync(
       );
     }
 
-    console.log(lat, lng);
+    // console.log(lat, lng);
 
     let floodProne = await FloodGeodatas.find({
       proneArea: {

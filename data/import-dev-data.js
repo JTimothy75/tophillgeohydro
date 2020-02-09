@@ -24,19 +24,13 @@ const floodGeodatas = JSON.parse(
   fs.readFileSync('data/floodgeodata.json', 'utf-8')
 );
 
-const ward = JSON.parse(
-  fs.readFileSync('data/ward.json', 'utf-8')
-);
+const ward = JSON.parse(fs.readFileSync('data/ward.json', 'utf-8'));
 
-const floodProne = JSON.parse(
-  fs.readFileSync('data/floodProne.json', 'utf-8')
-);
-const elevenLGA = JSON.parse(
-  fs.readFileSync('data/elevenLGA.json', 'utf-8')
-);
+const floodProne = JSON.parse(fs.readFileSync('data/floodProne.json', 'utf-8'));
+const elevenLGA = JSON.parse(fs.readFileSync('data/elevenLGA.json', 'utf-8'));
 
 // Import data in db
-const importData = async (data) => {
+const importData = async data => {
   try {
     await FloodGeodata.create(data);
     console.log('data successfully log');
@@ -45,7 +39,7 @@ const importData = async (data) => {
   }
 };
 
-const importDataGeo = async (data) => {
+const importDataGeo = async data => {
   try {
     await Geodata.create(data);
     console.log('data successfully log');
