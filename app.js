@@ -18,9 +18,7 @@ const floodGeodataRouter = require('./routes/floodGeodataRoutes');
 
 const app = express();
 
-app.use(cors())
 
-app.options('*', cors())
 
 // app.set('views', path.join(__dirname, 'dist'));
 app.use(express.static(path.join(__dirname, 'dist/tophillgeohydro')));
@@ -37,6 +35,7 @@ const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests from this IP, please try again in an hour'
 });
+
 // Cors===============================
 
 // app.use(function(req, res, next) {
@@ -77,6 +76,10 @@ app.use(
 // app.get('/user/login', (req, res) => {
 //   res.status(200).render(path.join(__dirname, 'dist/index.html'));
 // });
+
+app.use(cors())
+
+app.options('*', cors())
 
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/geodata', geodataRouter);
