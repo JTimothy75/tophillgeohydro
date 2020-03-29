@@ -38,13 +38,10 @@ const limiter = rateLimit({
 
 // Cors===============================
 
-// app.use(function(req, res, next) {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader('Access-Control-Allow-Methods', 'POST');
-//   res.setHeader('Access-Control-Allow-Credentials', 'true');
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//   next();
-// });
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+});
 
 app.use('/api', limiter);
 
@@ -77,9 +74,9 @@ app.use(
 //   res.status(200).render(path.join(__dirname, 'dist/index.html'));
 // });
 
-app.use(cors())
+// app.use(cors())
 
-app.options('*', cors())
+// app.options('*', cors())
 
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/geodata', geodataRouter);
