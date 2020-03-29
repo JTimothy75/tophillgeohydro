@@ -20,6 +20,8 @@ const app = express();
 
 app.use(cors())
 
+app.options('*', cors())
+
 // app.set('views', path.join(__dirname, 'dist'));
 app.use(express.static(path.join(__dirname, 'dist/tophillgeohydro')));
 // app.use(cors());
