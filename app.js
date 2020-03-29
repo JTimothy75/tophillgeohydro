@@ -17,6 +17,9 @@ const geodataRouter = require('./routes/geodataRoutes');
 const floodGeodataRouter = require('./routes/floodGeodataRoutes');
 
 const app = express();
+
+app.use(cors())
+
 // app.set('views', path.join(__dirname, 'dist'));
 app.use(express.static(path.join(__dirname, 'dist/tophillgeohydro')));
 // app.use(cors());
@@ -34,13 +37,13 @@ const limiter = rateLimit({
 });
 // Cors===============================
 
-app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
+// app.use(function(req, res, next) {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Methods', 'POST');
+//   res.setHeader('Access-Control-Allow-Credentials', 'true');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//   next();
+// });
 
 app.use('/api', limiter);
 
@@ -49,7 +52,7 @@ app.use(
   express.json({
     limit: '4000kb'
   })
-);
+// );
 app.use(cookieParser());
 
 // Data sanitization against NoSQL query injection
