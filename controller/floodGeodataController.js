@@ -132,6 +132,7 @@ exports.checkFloodPronePossibily = catchAsync(async (req, res, next) => {
 
 exports.checkFloodPronePossibilyPlusHistory = catchAsync(
   async (req, res, next) => {
+    // console.log(req.cookies);
     const { coordinate } = req.params;
     const [lat, lng] = coordinate.split(',');
 

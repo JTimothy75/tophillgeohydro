@@ -13,17 +13,16 @@ const signToken = id => {
   });
 };
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
-    httpOnly: true
+    httpOnly: true,
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
   };
-
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
   res.cookie('jwt', token, cookieOptions);
 
@@ -49,7 +48,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordChangedAt: req.body.passwordChangedAt
   });
 
-  createSendToken(newUser, 201, res);
+  createSendToken(newUser, 201, req, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -66,7 +65,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Incorrect email and password!', 401));
   }
   // 3) If everything is ok, send token to client
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 exports.logout = (req, res) => {
@@ -78,6 +77,7 @@ exports.logout = (req, res) => {
 };
 
 exports.protect = catchAsync(async (req, res, next) => {
+  // console.log(req.cookies);
   // 1) Getting token and check if it's there
   let token;
   if (
@@ -119,6 +119,8 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 // Only for rendered pages and there is no error
 exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  // console.log(req);
+
   if (req.cookies.jwt) {
     // 2) Verification of token
     const decoded = await promisify(jwt.verify)(
@@ -136,12 +138,21 @@ exports.isLoggedIn = catchAsync(async (req, res, next) => {
       return next();
     }
 
+    // console.log(currentUser);
+
     // There is a logged in user
     res.locals.user = currentUser;
-    req.user = currentUser;
-    return next();
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user: currentUser
+      }
+    });
+  } else {
+    res.sendStatus(401);
+    // .send('Unauthorized');
   }
-  next();
 });
 
 exports.restrictTo = (...roles) => {

@@ -18,10 +18,8 @@ const floodGeodataRouter = require('./routes/floodGeodataRoutes');
 
 const app = express();
 
-
-
 // app.set('views', path.join(__dirname, 'dist'));
-app.use(express.static(path.join(__dirname, 'dist/tophillgeohydro')));
+// app.use(express.static(path.join(__dirname, 'dist/tophillgeohydro')));
 // app.use(cors());
 // 1) Global Middlewaes
 // Set security HTTP header
@@ -36,10 +34,11 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again in an hour'
 });
 
-// Cors===============================
+// Cors=============================
 
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', 'https://tophill.herokuapp.com');
+  // res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:4200');
   res.setHeader('Access-Control-Allow-Methods', 'POST');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -53,7 +52,7 @@ app.use(
   express.json({
     limit: '4000kb'
   })
-// );
+);
 app.use(cookieParser());
 
 // Data sanitization against NoSQL query injection
@@ -70,14 +69,13 @@ app.use(
 
 // ROUTES
 
-
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/geodata', geodataRouter);
 app.use('/api/v1/floodGeodata', floodGeodataRouter);
 
-app.get('/*', (req, res) => {
-  res.status(200).render(path.join(__dirname, 'dist/tophillgeohydro/index'));
-});
+// app.get('/*', (req, res) => {
+//   res.status(200).render(path.join(__dirname, 'dist/tophillgeohydro/index'));
+// });
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
